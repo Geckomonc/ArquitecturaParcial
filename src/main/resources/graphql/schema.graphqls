@@ -1,0 +1,84 @@
+# Representa un proyecto en el sistema, incluyendo información general
+# y los empleados que están asignados a él.
+type Proyecto {
+    # Identificador único del proyecto.
+    id: ID!
+
+    # Nombre del proyecto.
+    nombre: String!
+
+    # Descripción detallada del proyecto.
+    descripcion: String
+
+    # Fecha de inicio del proyecto en formato YYYY-MM-DD.
+    fechaInicio: String!
+
+    # Fecha de finalización del proyecto en formato YYYY-MM-DD.
+    fechaFin: String!
+
+    # Estado actual del proyecto (por ejemplo: En progreso, Finalizado, Cancelado).
+    estado: String!
+
+    # Lista de empleados asignados al proyecto con su respectivo rol.
+    empleadosAsignados: [ProyectoEmpleado!]!
+}
+
+# Representa la relación entre un empleado y un proyecto, incluyendo su rol.
+type ProyectoEmpleado {
+    # Información del empleado asignado.
+    empleado: Empleado!
+
+    # Rol que cumple el empleado dentro del proyecto.
+    rol: String!
+}
+
+# Representa un empleado registrado en el sistema.
+type Empleado {
+    # Identificador único del empleado.
+    id: ID!
+
+    # Nombre del empleado.
+    nombre: String!
+
+    # Apellido del empleado.
+    apellido: String!
+
+    # Número de cédula del empleado (identificación única).
+    cedula: String!
+}
+
+# Entrada para registrar empleados asignados a un proyecto.
+# Incluye información personal y el rol dentro del proyecto.
+input EmpleadoInput {
+    # Nombre del empleado.
+    nombre: String!
+
+    # Apellido del empleado.
+    apellido: String!
+
+    # Número de cédula del empleado.
+    cedula: String!
+
+    # Rol del empleado dentro del proyecto.
+    rol: String!
+}
+
+# Mutaciones disponibles en el sistema (acciones que modifican los datos).
+type Mutation {
+    # Crea un nuevo proyecto con la información general y una lista de empleados asignados.
+    addProyecto(
+        nombre: String!,
+        descripcion: String!,
+        fechaInicio: String!,
+        fechaFin: String!,
+        estado: String!,
+        empleados: [EmpleadoInput!]!
+    ): Proyecto
+}
+
+# Consultas disponibles en el sistema (acciones de solo lectura).
+type Query {
+    # Obtiene la lista de proyectos donde está asignado un empleado, según su cédula.
+    proyectosPorCedulaEmpleado(cedula: String!): [Proyecto]
+}
+
